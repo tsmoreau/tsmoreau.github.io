@@ -80,13 +80,13 @@ Pizza.prototype.createRandomPizza = function() {
 
     // Validates name < 20 chars
     if (name.length > 20) {
-        showStatus("Please name your record with less than 32 characters");
+        showStatus("Please name your Pizza with less than 32 characters");
         return;
     }
 
     // Validates name > 0 chars
     if (!name) {
-        showStatus("Please enter valid record name");
+        showStatus("Please enter valid name");
         return;
     }
 
@@ -108,10 +108,10 @@ Pizza.prototype.createRandomPizza = function() {
             } else {
                 // If success, wait for confirmation of transaction,
                 // then clear form values
-                showStatus("Pressing Record");
+                showStatus("Creating pizza");
                 that.waitForReceipt(txHash, function(receipt) {
                     if (receipt.status == 1) {
-                        showStatus("New Record Added to Collection");
+                        showStatus("Creation successful");
                         $("#create-name").val("");
                         $("#create-tab .pizza-container .ingredients").html("");
                         $("#button-create").attr("disabled", false);
@@ -153,10 +153,10 @@ Pizza.prototype.loadInventory = function() {
                             '<div class="action-buttons">\
                             <button class="btn button-gift" id="' +
                             realIndex +
-                            '">Send</button>\
+                            '">Gift</button>\
                             <button class="btn button-eat" id="' +
                             realIndex +
-                            '">Destroy</button>\
+                            '">Eat</button>\
                             </div>';
 
                         $(".inventory-list").append(
@@ -190,7 +190,7 @@ Pizza.prototype.loadInventory = function() {
                 }
             } else {
                 $(".inventory-list").append(
-                    '<p style="text-align: center; width: 100%">Looks like you don\'t have any Remix Limited Records yet</p>'
+                    '<p style="text-align: center; width: 100%">It seems you don\'t have any CryptoPizza yet</p>'
                 );
             }
         }
@@ -256,10 +256,10 @@ Pizza.prototype.generatePizzaImage = function(dna) {
 Pizza.prototype.giftPizza = function(pizzaId, cb) {
     var that = this;
 
-    var sendTo = prompt("Enter address which should receive your record");
+    var sendTo = prompt("Enter address which should receive your Pizza");
 
     if (!isValidAddress(sendTo)) {
-        showStatus("Please enter a valid Tao address");
+        showStatus("Please enter a valid address");
         return;
     }
 
@@ -317,7 +317,7 @@ Pizza.prototype.giftPizza = function(pizzaId, cb) {
 Pizza.prototype.eatPizza = function(pizzaId, cb) {
     var that = this;
 
-    var confirmation = confirm("Are you sure you want to destroy this record?");
+    var confirmation = confirm("Are you sure?");
 
     if (confirmation) {
         $(".button-gift, .button-eat").attr("disabled", true);
@@ -346,10 +346,10 @@ Pizza.prototype.eatPizza = function(pizzaId, cb) {
                     console.error(error);
                     $(".button-gift, .button-eat").attr("disabled", false);
                     $("#pizza-" + pizzaId).css("opacity", "1");
-                    showStatus("Record destruction canceled.");
+                    showStatus("Eating canceled.");
                     return;
                 } else {
-                    showStatus("Destroying Record...");
+                    showStatus("Eating Pizza...");
                     that.waitForReceipt(txHash, function(receipt) {
                         if (receipt.status == 1) {
                             $(".inventory-list").html("");
@@ -357,11 +357,11 @@ Pizza.prototype.eatPizza = function(pizzaId, cb) {
                                 "disabled",
                                 false
                             );
-                            showStatus("Record has been destroyed.");
+                            showStatus("Pizza is gone");
                             that.loadInventory();
                         } else {
                             showStatus(
-                                "Record was not destroyed. Please try it again."
+                                "Pizza was not eaten. Please try it again."
                             );
                             $(".button-gift, .button-eat").attr(
                                 "disabled",
