@@ -1,4 +1,4 @@
-[
+var cryptoPizzaABI = [
 	{
 		"constant": false,
 		"inputs": [
