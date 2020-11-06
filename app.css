@@ -5,6 +5,7 @@
 body {
     
 background-image: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 9%, rgba(0,151,255,1) 100%);color: #FCE8DF;
+    background-repeat: no-repeat;
     font-family: 'Chivo', 'Impact', 'Calibri';
     text-align: center;
     height: 100%;
