@@ -225,6 +225,31 @@ button.btn {
     max-width: 200px;
 }
 
+button.mainnav{
+    
+    font-size: 1.5rem;
+    padding: .75em .5em;
+  
+    font-family: 'Electrolize', 'Impact', 'Calibri';
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    
+    color: white;
+    text-shadow:
+   -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+     1px 1px 0 #000;
+}
+
+.navbar{
+    margin-bottom: 1em;
+   
+}
+
 #status {
     visibility: hidden;
     min-width: 250px;
@@ -239,6 +264,8 @@ button.btn {
     left: 50%;
     bottom: 30px;
 }
+
+
 
 #status.show {
     visibility: visible;
