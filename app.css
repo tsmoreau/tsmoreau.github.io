@@ -35,6 +35,7 @@ h1 {
 h2 {
     margin-bottom: 25px;
     color: white;
+    font-family: "Wandertucker"
 }
 
 h3 {
@@ -225,7 +226,7 @@ button:hover {
 button.mainnav{
     font-size: 1.5rem;
     padding: .75em .5em;
-    font-family: 'Wandertucker', 'Electrolize', 'Calibri';
+    font-family: 'Electrolize', 'Impact', 'Calibri';
   	transition: all .3s ease-in-out;
 
     background-color: Transparent;
