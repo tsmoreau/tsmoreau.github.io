@@ -1,241 +1,96 @@
-<!DOCTYPE html>
-<html lang="en" >
+<html>
+  <head>
+    <title>Simple vanilla JS example of Web3modal usage</title>
 
-<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta charset="UTF-8">
-  
-<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-<meta name="apple-mobile-web-app-title" content="CodePen">
+    <!-- Get some bootstrap default styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  </head>
+  <body>
+    <!-- Construct a Bootstrap layout -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Web3modal vanilla JavaScript demo</h1>
 
-<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+          <p>No wallet connected. Connect wallet to show accounts and their ETH balances.</p>
 
-<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+          <div id="prepare">
+            <button class="btn btn-primary" id="btn-connect">
+              Connect wallet
+            </button>
+          </div>
 
+          <div id="connected" style="display: none">
 
-  <title>CodePen - Web3 - Increment Watch</title>
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+            <button class="btn btn-primary" id="btn-disconnect">
+              Disconnect wallet
+            </button>
 
-  
-  
-<style>
-@import url("https://fonts.googleapis.com/css?family=Roboto");
-/* System Fonts as used by Medium and WordPress */
- body {
-	 background: #f0f0f0;
-	 font-size: 12px;
-	 font-family: "Roboto", sans-serif;
-	 text-align: center;
-	 color: #333;
-}
- header {
-	 color: #999;
-}
- .content {
-	 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-	 background: #fff;
-	 display: inline-block;
-	 padding: 24px 40px 16px;
-	 margin-top: 48px;
-	 border-radius: 2px;
-}
- .count-header {
-	 font-size: 20px;
-	 text-align: center;
-}
- #count {
-	 font-size: 64px;
-	 text-align: center;
-}
- .button-wrapper {
-	 display: flex;
-	 justify-content: center;
-	 margin-top: 24px;
-}
- .button-wrapper > div {
-	 cursor: pointer;
-	 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-	 border-radius: 2px;
-	 width: 150px;
-	 background: #4caf50;
-	 font-size: 16px;
-	 border: none;
-	 color: #fff;
-	 font-weight: 400;
-	 padding: 8px 16px;
-	 margin: 4px;
-	 text-align: center;
-	 transition: background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
- .button-wrapper #refresh {
-	 background: #607d8b;
-}
- .button-wrapper > div:active {
-	 opacity: 0.7;
-}
- .button-wrapper .disabled {
-	 cursor: default;
-	 opacity: 0.3;
-	 box-shadow: none;
-}
- .button-wrapper > div:hover:not(.disabled) {
-	 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
- .button-wrapper #increment:hover:not(.disabled) {
-	 background: #43a047;
-}
- .button-wrapper #refresh:hover:not(.disabled) {
-	 background: #546e7a;
-}
-</style>
+            <hr>
 
-  <script>
-  window.console = window.console || function(t) {};
-</script>
+            <div id="network">
+              <p>
+                <strong>Connected blockchain:</strong> <span id="network-name"></span>
+              </p>
 
-  
-  
-  <script>
-  if (document.location.search.match(/type=embed/gi)) {
-    window.parent.postMessage("resize", "*");
-  }
-</script>
+              <p>
+                <strong>Selected account:</strong> <span id="selected-account"></span>
+              </p>
 
+            </div>
 
-</head>
+            <hr>
 
-<body translate="no" >
-  <header>
-<div class="network-wrapper">Network: <span id="network"></span></div>
-<div class="account-wrapper">Account: <span id="account"></span></div>
-<div class="balance-wrapper">Balance: <span id="balance"></span></div>
-</header>
-  
-<div class="content">
-<div class="count-header">ACurrent Count</div>
-<div id="count">-</div>
+            <h3>All account balances</h3>
 
-<div class="button-wrapper">
-  <div id="increment">Increment</div>
-  <div id="refresh">Refresh</div>
-</div>
-</div>
-    <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+            <table class="table table-listing">
+              <thead>
+                <th>Address</th>
+                <th>ETH balance</th>
+              </thead>
 
-  
-  
-      <script id="rendered-js" >
-// Increment Number a number using Solidity Smart Contract
-// Smart Contract: https://gist.github.com/anonymous/82f97284041f6cfeebfcb407ad0f303d
+              <tbody id="accounts">
+              </tbody>
+            </table>
 
-// Smart Contract's Application Binary Interface (https://github.com/ethereum/wiki/wiki/Ethereum-Contract-ABI)
-var ABI = [
-{
-  constant: true,
-  inputs: [],
-  name: "getCount",
-  outputs: [{ name: "", type: "uint256" }],
-  payable: false,
-  stateMutability: "view",
-  type: "function" },
+            <p>Please try to switch between different accounts in your wallet if your wallet supports this functonality.</p>
 
-{ payable: false, stateMutability: "nonpayable", type: "fallback" },
-{
-  anonymous: false,
-  inputs: [{ indexed: false, name: "count", type: "uint256" }],
-  name: "log_string",
-  type: "event" }];
+          </div>
 
+        </div>
+      </div>
+    </div>
 
+    <!-- We use simple <template> templating for the example -->
+    <div id="templates" style="display: none">
+      <template id="template-balance">
+        <tr>
+          <th class="address"></th>
+          <td class="balance"></td>
+        </tr>
+      </template>
+    </div>
 
-const contractAddress = "0x0FC9DC696eC91B4232a0620a44F44a18f30e5F9F";
-const contract = web3.eth.contract(ABI).at(contractAddress);
-const getCountFunc = contract.getCount.getData();
+    <!--
 
-const countEl = document.querySelector("#count");
-const networkEl = document.querySelector("#network");
-const refreshButtonEl = document.querySelector("#refresh");
-const incrementButtonEl = document.querySelector("#increment");
-const accountEl = document.querySelector("#account");
-const balanceEl = document.querySelector("#balance");
+      Use unpkg CDN to load all NPM packages to vanilla Javascript - read more at http://unpkg.com
 
-let disableTransactions = false;
+      On your deployment, you properly either want to use a preprocessing tool like webpack
+      to include these files, or extract NPM archives and manually host the files inside.
 
-contract.log_string().watch((error, result) => {
-  console.log("on watch");
-  console.log(result);
-});
+      TODO: Pin down all versions.
 
-web3.version.getNetwork((err, netId) => {
+    -->
 
-  // If this is the Main net, disable the increment button
-  if (netId === '1') {
-    disableTransactions = true;
-    incrementButtonEl.classList = ['disabled'];
-  }
+    <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains/lib/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
 
-  const network =
-  {
-    1: "Mainnet",
-    3: "Ropsten Test Network" }[
-  netId] || "Unknown Network";
-
-  networkEl.innerText = network;
-});
-
-web3.eth.getBlockNumber((error, result) => {
-  console.log(result);
-});
-
-web3.eth.getAccounts((error, result) => {
-  accountEl.innerText = result;
-
-  web3.eth.getBalance(result[0], function (error, result) {
-    var val = web3.fromWei(result);
-    balanceEl.innerText = `${val} ETH`;
-  });
-});
-
-incrementButtonEl.addEventListener('click', function () {
-  if (disableTransactions) {
-    return;
-  }
-
-  web3.eth.sendTransaction(
-  {
-    to: contractAddress },
-
-  (error, result) => {
-    console.log(result);
-  });
-
-});
-
-function refreshCount() {
-  refreshButtonEl.classList = ["disabled"];
-  countEl.innerText = '-';
-
-  web3.eth.call(
-  {
-    to: contractAddress,
-    data: getCountFunc },
-
-  (error, result) => {
-    countEl.innerText = parseInt(result, 16);
-    refreshButtonEl.classList = [];
-  });
-
-}
-
-refreshButtonEl.addEventListener('click', refreshCount);
-refreshCount();
-//# sourceURL=pen.js
-    </script>
-
-  
-
-</body>
-
+    <!-- This is our example code -->
+    <script type="text/javascript" src="./example.js"></script>
+  </body>
 </html>
- 
