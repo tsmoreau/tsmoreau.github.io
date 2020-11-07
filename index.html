@@ -1,16 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 
-<head> 
-<meta charset="utf-8">
-  <script type="text/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
-  <script type="text/javascript" src="https://unpkg.com/web3@0.20.5/dist/web3.min.js"></script>
-  <link rel="stylesheet" href="app.css">
-  <script src="app.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<head>
+
+  <meta charset="UTF-8">
+  
+<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+<meta name="apple-mobile-web-app-title" content="CodePen">
+
+<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+
+
+  <title>CodePen - Web3 - Increment Watch</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  
+  
+<style>
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+/* System Fonts as used by Medium and WordPress */
+ body {
+	 background: #f0f0f0;
+	 font-size: 12px;
+	 font-family: "Roboto", sans-serif;
+	 text-align: center;
+	 color: #333;
+}
+ header {
+	 color: #999;
+}
+ .content {
+	 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	 background: #fff;
+	 display: inline-block;
+	 padding: 24px 40px 16px;
+	 margin-top: 48px;
+	 border-radius: 2px;
+}
+ .count-header {
+	 font-size: 20px;
+	 text-align: center;
+}
+ #count {
+	 font-size: 64px;
+	 text-align: center;
+}
+ .button-wrapper {
+	 display: flex;
+	 justify-content: center;
+	 margin-top: 24px;
+}
+ .button-wrapper > div {
+	 cursor: pointer;
+	 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	 border-radius: 2px;
+	 width: 150px;
+	 background: #4caf50;
+	 font-size: 16px;
+	 border: none;
+	 color: #fff;
+	 font-weight: 400;
+	 padding: 8px 16px;
+	 margin: 4px;
+	 text-align: center;
+	 transition: background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+ .button-wrapper #refresh {
+	 background: #607d8b;
+}
+ .button-wrapper > div:active {
+	 opacity: 0.7;
+}
+ .button-wrapper .disabled {
+	 cursor: default;
+	 opacity: 0.3;
+	 box-shadow: none;
+}
+ .button-wrapper > div:hover:not(.disabled) {
+	 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+ .button-wrapper #increment:hover:not(.disabled) {
+	 background: #43a047;
+}
+ .button-wrapper #refresh:hover:not(.disabled) {
+	 background: #546e7a;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+
+
 </head>
-  <body>
-<header>
+
+<body translate="no" >
+  <header>
 <div class="network-wrapper">Network: <span id="network"></span></div>
 <div class="account-wrapper">Account: <span id="account"></span></div>
 <div class="balance-wrapper">Balance: <span id="balance"></span></div>
@@ -25,30 +121,33 @@
   <div id="refresh">Refresh</div>
 </div>
 </div>
-    
-    <script>
-     Increment Number a number using Solidity Smart Contract
+    <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+
+  
+  
+      <script id="rendered-js" >
+// Increment Number a number using Solidity Smart Contract
 // Smart Contract: https://gist.github.com/anonymous/82f97284041f6cfeebfcb407ad0f303d
 
 // Smart Contract's Application Binary Interface (https://github.com/ethereum/wiki/wiki/Ethereum-Contract-ABI)
 var ABI = [
-  {
-    constant: true,
-    inputs: [],
-    name: "getCount",
-    outputs: [{ name: "", type: "uint256" }],
-    payable: false,
-    stateMutability: "view",
-    type: "function"
-  },
-  { payable: false, stateMutability: "nonpayable", type: "fallback" },
-  {
-    anonymous: false,
-    inputs: [{ indexed: false, name: "count", type: "uint256" }],
-    name: "log_string",
-    type: "event"
-  }
-];
+{
+  constant: true,
+  inputs: [],
+  name: "getCount",
+  outputs: [{ name: "", type: "uint256" }],
+  payable: false,
+  stateMutability: "view",
+  type: "function" },
+
+{ payable: false, stateMutability: "nonpayable", type: "fallback" },
+{
+  anonymous: false,
+  inputs: [{ indexed: false, name: "count", type: "uint256" }],
+  name: "log_string",
+  type: "event" }];
+
+
 
 const contractAddress = "0x0FC9DC696eC91B4232a0620a44F44a18f30e5F9F";
 const contract = web3.eth.contract(ABI).at(contractAddress);
@@ -59,78 +158,84 @@ const networkEl = document.querySelector("#network");
 const refreshButtonEl = document.querySelector("#refresh");
 const incrementButtonEl = document.querySelector("#increment");
 const accountEl = document.querySelector("#account");
-const balanceEl =  document.querySelector("#balance");
+const balanceEl = document.querySelector("#balance");
 
 let disableTransactions = false;
 
 contract.log_string().watch((error, result) => {
-  console.log("on watch"); 
+  console.log("on watch");
   console.log(result);
 });
 
 web3.version.getNetwork((err, netId) => {
-  
+
   // If this is the Main net, disable the increment button
   if (netId === '1') {
     disableTransactions = true;
     incrementButtonEl.classList = ['disabled'];
   }
-  
+
   const network =
-    {
-      1: "Mainnet",
-      3: "Ropsten Test Network"
-    }[netId] || "Unknown Network";
+  {
+    1: "Mainnet",
+    3: "Ropsten Test Network" }[
+  netId] || "Unknown Network";
 
   networkEl.innerText = network;
 });
 
 web3.eth.getBlockNumber((error, result) => {
   console.log(result);
-})
+});
 
 web3.eth.getAccounts((error, result) => {
   accountEl.innerText = result;
-  
-  web3.eth.getBalance(result[0], function(error, result) {
+
+  web3.eth.getBalance(result[0], function (error, result) {
     var val = web3.fromWei(result);
     balanceEl.innerText = `${val} ETH`;
   });
-})
+});
 
-incrementButtonEl.addEventListener('click', function() {
+incrementButtonEl.addEventListener('click', function () {
   if (disableTransactions) {
     return;
   }
-  
+
   web3.eth.sendTransaction(
-    {
-      to: contractAddress
-    },
-    (error, result) => {
-      console.log(result);
-    }
-  );
+  {
+    to: contractAddress },
+
+  (error, result) => {
+    console.log(result);
+  });
+
 });
 
 function refreshCount() {
   refreshButtonEl.classList = ["disabled"];
   countEl.innerText = '-';
-  
+
   web3.eth.call(
-    {
-      to: contractAddress,
-      data: getCountFunc
-    },
-    (error, result) => {
-      countEl.innerText = parseInt(result, 16);
-      refreshButtonEl.classList = [];
-    }
-  );
+  {
+    to: contractAddress,
+    data: getCountFunc },
+
+  (error, result) => {
+    countEl.innerText = parseInt(result, 16);
+    refreshButtonEl.classList = [];
+  });
+
 }
 
 refreshButtonEl.addEventListener('click', refreshCount);
 refreshCount();
-      </script>
-    
+//# sourceURL=pen.js
+    </script>
+
+  
+
 </body>
+
+</html>
+ 
