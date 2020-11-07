@@ -1,97 +1,166 @@
-<html>
-  <head>
-    <title>Simple vanilla JS example of Web3modal usage</title>
+<!DOCTYPE html>
+<html lang="en">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/web3@0.20.5/dist/web3.min.js"></script>
+  <link rel="stylesheet" href="app.css">
+  <script type="text/javascript" src="app.js"></script>
 
-    <!-- Get some bootstrap default styles -->
-    <script type="text/javascript" src="app.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  </head>
-  <body>
-    <!-- Construct a Bootstrap layout -->
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <h1>Web3modal vanilla JavaScript demo</h1>
+  <!-- The generated javascript and app.js will be substituted in below -->
+  <!-- JAVASCRIPT -->
 
-          <p>No wallet connected. Connect wallet to show accounts and their ETH balances.</p>
+  <!-- The app.css contents will be substituted in below -->
+  <!-- STYLE -->
 
-          <div id="prepare">
-            <button class="btn btn-primary" id="btn-connect">
-              Connect wallet
-            </button>
-          </div>
+  <script>
+    /* Functionality for tabs - navigation */
+    function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+  </script>
+  <link href='https://fonts.googleapis.com/css?family=Chivo' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet'>
 
-          <div id="connected" style="display: none">
+</head>
 
-            <button class="btn btn-primary" id="btn-disconnect">
-              Disconnect wallet
-            </button>
+<body>
 
-            <hr>
+  <div id="main-container">
 
-            <div id="network">
-              <p>
-                <strong>Connected blockchain:</strong> <span id="network-name"></span>
-              </p>
+    <!-- Header -->
 
-              <p>
-                <strong>Selected account:</strong> <span id="selected-account"></span>
-              </p>
+    <header>
+      <img src="https://raw.githubusercontent.com/tsmoreau/tsmoreau.github.io/main/depict-logo.svg" width="500">
+    </header>
 
+    <!-- Navigation -->
+
+    <!-- Main Nav -->
+
+    <div id="mainnav" class="navbar">
+      <button class="mainnav" onclick="openTab(event, 'create-tab')">sticker_machine</button>
+      <button class="mainnav" onclick="openTab(event, 'inventory-tab')">sticker_collection</button>
+      <button class="mainnav" onclick="openTab(event, 'stats-tab')">stats</button>
+      <button class="mainnav" onclick="openTab(event, 'about-tab')">faq</button>
+
+    </div>
+
+    <!-- Commenting Out Older Nav Bar
+            <div class="tab">
+              
+              
+                <button class="tablinks" onclick="openTab(event, 'create-tab')">sticker machine</button>
+                <button class="tablinks" onclick="openTab(event, 'inventory-tab')">sticker collection</button>
+                <button class="tablinks" onclick="openTab(event, 'stats-tab')">stats</button>
+                <button class="tablinks" onclick="openTab(event, 'about-tab')">faq</button>
             </div>
+           -->
 
-            <hr>
+    <!-- Create section -->
 
-            <h3>All account balances</h3>
+    <div id="create-tab" class="tabcontent">
 
-            <table class="table table-listing">
-              <thead>
-                <th>Address</th>
-                <th>ETH balance</th>
-              </thead>
+      
+                <div class="pizza-container" id="pizza-create-container"><!--
+                    <img class="pizza-frame" src="https://studio.ethereum.org/static/img/cryptopizza/container.jpg"/>
+                    <img src="https://studio.ethereum.org/static/img/cryptopizza/corpus.png"/>
+                  
+                  
+                  
+                    <!-- Ingredients images will be appended to this div -->
 
-              <tbody id="accounts">
-              </tbody>
-            </table>
+      <div class="ingredients"></div>
 
-            <p>Please try to switch between different accounts in your wallet if your wallet supports this functonality.</p>
-
-          </div>
-
-        </div>
-      </div>
     </div>
 
-    <!-- We use simple <template> templating for the example -->
-    <div id="templates" style="display: none">
-      <template id="template-balance">
-        <tr>
-          <th class="address"></th>
-          <td class="balance"></td>
-        </tr>
-      </template>
+    <div class="input-container">
+      <input type="text" id="create-name" placeholder="enter sticker name..." maxlength="20" />
+
+    </div>
+    <div class="input-container">
+
+      <button class="mainnav" id="button-create">new sticker</button>
+    </div>
+  </div>
+
+  <!-- Inventory section -->
+
+  <div id="inventory-tab" class="tabcontent">
+    <h2>your sticker collection</h2>
+    <!-- Pizza containers will be appended to this div -->
+    <div class="row inventory-list"></div>
+  </div>
+
+  <!-- Stats section -->
+
+  <div id="stats-tab" class="tabcontent">
+    <h2>your stats</h2>
+
+    <h3>stickers created:</h3>
+    <h3>stickers destroyed:</h3>
+    <h3>stickers gifted:</h3>
+
+  </div>
+
+  <!-- FAQ section -->
+
+  <div id="about-tab" class="tabcontent">
+
+    <button class="accordion">What is Depict Limited?
+      <hr></button>
+    <div class="panel">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     </div>
 
-    <!--
+    <button class="accordion">What is the Tao Blockchain?
+      <hr></button>
+    <div class="panel">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
 
-      Use unpkg CDN to load all NPM packages to vanilla Javascript - read more at http://unpkg.com
+    <button class="accordion">How Do I Use Depict Limited?
+      <hr></button>
 
-      On your deployment, you properly either want to use a preprocessing tool like webpack
-      to include these files, or extract NPM archives and manually host the files inside.
+    <div class="panel">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
 
-      TODO: Pin down all versions.
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.display === "block") {
+            panel.style.display = "none";
+          } else {
+            panel.style.display = "block";
+          }
+        });
+      }
+    </script>
 
-    -->
+  </div>
+  </div>
 
-    <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/web3modal"></script>
-    <script type="text/javascript" src="https://unpkg.com/evm-chains/lib/index.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider"></script>
-    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+</body>
+<div class="footer">
+  <div class="network-wrapper">Connected to: <span id="network"></span></div>
+  <div class="account-wrapper">Account: <span id="account"></span></div>
+  <div class="balance-wrapper">Balance: <span id="balance"></span></div>
+</div>
 
-    <!-- This is our example code -->
-    <script type="text/javascript" src="./example.js"></script>
-  </body>
 </html>
