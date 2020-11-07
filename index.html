@@ -31,6 +31,7 @@
         </script>
         <link href='https://fonts.googleapis.com/css?family=Chivo' rel='stylesheet'>
       <link href='https://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet'>
+     
     </head>
     <body>
         
@@ -41,18 +42,20 @@
           
           
             <header>
-              <img src="https://raw.githubusercontent.com/tsmoreau/tsmoreau.github.io/main/depict-logo.svg" width="500">
+              <img src="https://raw.githubusercontent.com/tsmoreau/tsmoreau.github.io/main/Untitled-1-01.svg" width="500">
             </header>
 
             <!-- Navigation -->
-            <!-- Main Nav -->
           
+            <!-- Main Nav -->
+
           
           <div id="mainnav" class="navbar">
           <button class="mainnav" onclick="openTab(event, 'create-tab')">sticker_machine</button>
           <button class="mainnav" onclick="openTab(event, 'inventory-tab')">sticker_collection</button>
           <button class="mainnav" onclick="openTab(event, 'stats-tab')">stats</button>
           <button class="mainnav" onclick="openTab(event, 'about-tab')">faq</button>
+ 
           </div>
           
           
@@ -69,6 +72,8 @@
 
 
             <!-- Create section -->
+          
+          
             <div id="create-tab" class="tabcontent">
                 
 
@@ -90,32 +95,78 @@
                 </div>
             </div>
 
+          
             <!-- Inventory section -->
+          
+          
             <div id="inventory-tab" class="tabcontent">
                 <h2>your sticker collection</h2>
                 <!-- Pizza containers will be appended to this div -->
                 <div class="row inventory-list"></div>
             </div>
 
+          
+          <!-- Stats section -->
+          
+          
             <div id="stats-tab" class="tabcontent">
                 <h2>your stats</h2>
 
                 <h3>stickers created:</h3>
                 <h3>stickers destroyed:</h3>
-                <h3>sticekrs gifted:</h3>
+                <h3>stickers gifted:</h3>
                 
             </div>
 
+          
+          <!-- FAQ section -->
+          
+          
             <div id="about-tab" class="tabcontent">
                 
 
-                <h3>an erc721 randomized art project on the Tao Blockchain</h3>
                 
+
+            
+
+<button class="accordion">What is Depict Limited?<hr></button>
+<div class="panel">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+<button class="accordion">What is the Tao Blockchain?<hr></button>
+<div class="panel">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+<button class="accordion">How Do I Use Depict Limited?<hr></button>
               
-              
-              
-              
+<div class="panel">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+              <script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
+          
             </div>      
         </div>
+      
     </body>
+  <div class="footer">
+  <p>Footer</p>
+</div>
 </html>
