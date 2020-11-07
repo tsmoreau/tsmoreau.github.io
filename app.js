@@ -50,8 +50,7 @@ web3.version.getNetwork((err, netId) => {
   const network =
     {
       1: "Mainnet",
-      3: "Ropsten Test Network",
-      558: "Tao Network",
+      3: "Ropsten Test Network"
     }[netId] || "Unknown Network";
 
   networkEl.innerText = network;
