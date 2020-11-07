@@ -1,85 +1,69 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
-
-$shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-$shadowDeep: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-
 /* System Fonts as used by Medium and WordPress */
-body {
-  background: #f0f0f0;
-  font-size: 12px;
-  font-family: "Roboto", sans-serif;
-  text-align: center;
-  color: #333;
+ body {
+	 background: #f0f0f0;
+	 font-size: 12px;
+	 font-family: "Roboto", sans-serif;
+	 text-align: center;
+	 color: #333;
 }
-
-header {
-  color: #999;
+ header {
+	 color: #999;
 }
-
-.content {
-  box-shadow: $shadow;
-  background: #fff;
-  display: inline-block;
-  padding: 24px 40px 16px;
-  margin-top: 48px;
-  border-radius: 2px;
+ .content {
+	 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	 background: #fff;
+	 display: inline-block;
+	 padding: 24px 40px 16px;
+	 margin-top: 48px;
+	 border-radius: 2px;
 }
-
-.count-header {
-  font-size: 20px;
-  text-align: center;
+ .count-header {
+	 font-size: 20px;
+	 text-align: center;
 }
-
-#count {
-  font-size: 64px;
-  text-align: center;
+ #count {
+	 font-size: 64px;
+	 text-align: center;
 }
-
-.button-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 24px;
-
-  & > div {
-    cursor: pointer;
-    box-shadow: $shadow;
-    border-radius: 2px;
-    width: 150px;
-    background: #4caf50;
-    font-size: 16px;
-    border: none;
-    color: #fff;
-    font-weight: 400;
-    padding: 8px 16px;
-    margin: 4px;
-    text-align: center;
-    transition: background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-      box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-  
-  #refresh {
-    background: #607D8B;
-  }
-
-  & > div:active {
-    opacity: 0.7;
-  }
-
-  .disabled {
-    cursor: default;
-    opacity: 0.3;
-    box-shadow: none;
-  }
-
-  & > div:hover:not(.disabled) {
-    box-shadow: $shadowDeep;
-  }
-
-  #increment:hover:not(.disabled) {
-    background: #43a047;
-  }
-
-  #refresh:hover:not(.disabled) {
-    background: #546e7a;
-  }
+ .button-wrapper {
+	 display: flex;
+	 justify-content: center;
+	 margin-top: 24px;
 }
+ .button-wrapper > div {
+	 cursor: pointer;
+	 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	 border-radius: 2px;
+	 width: 150px;
+	 background: #4caf50;
+	 font-size: 16px;
+	 border: none;
+	 color: #fff;
+	 font-weight: 400;
+	 padding: 8px 16px;
+	 margin: 4px;
+	 text-align: center;
+	 transition: background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+ .button-wrapper #refresh {
+	 background: #607d8b;
+}
+ .button-wrapper > div:active {
+	 opacity: 0.7;
+}
+ .button-wrapper .disabled {
+	 cursor: default;
+	 opacity: 0.3;
+	 box-shadow: none;
+}
+ .button-wrapper > div:hover:not(.disabled) {
+	 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+ .button-wrapper #increment:hover:not(.disabled) {
+	 background: #43a047;
+}
+ .button-wrapper #refresh:hover:not(.disabled) {
+	 background: #546e7a;
+}
+ 
