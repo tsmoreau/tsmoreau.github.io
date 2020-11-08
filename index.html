@@ -1,166 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <script type="text/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
-  <script type="text/javascript" src="https://unpkg.com/web3@0.20.5/dist/web3.min.js"></script>
-  <link rel="stylesheet" href="app.css">
+  <head>
+    <meta charset="UTF-8">
+    <title>CryptoPizza front-end</title>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3@0.20.5/dist/web3.min.js"></script>
+    <script language="javascript" type="text/javascript" src="cryptozombies_abi.js"></script>
+      <link rel="stylesheet" href="app.css">
   <script type="text/javascript" src="app.js"></script>
-
-  <!-- The generated javascript and app.js will be substituted in below -->
-  <!-- JAVASCRIPT -->
-
-  <!-- The app.css contents will be substituted in below -->
-  <!-- STYLE -->
-
-  <script>
-    /* Functionality for tabs - navigation */
-    function openTab(evt, tabName) {
-      var i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
-      tablinks = document.getElementsByClassName("tablinks");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-      }
-      document.getElementById(tabName).style.display = "block";
-      evt.currentTarget.className += " active";
-    }
-  </script>
-  <link href='https://fonts.googleapis.com/css?family=Chivo' rel='stylesheet'>
-  <link href='https://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet'>
-
-</head>
-
-<body>
-
-  <div id="main-container">
-
-    <!-- Header -->
-
-    <header>
-      <img src="https://raw.githubusercontent.com/tsmoreau/tsmoreau.github.io/main/depict-logo.svg" width="500">
-    </header>
-
-    <!-- Navigation -->
-
-    <!-- Main Nav -->
-
-    <div id="mainnav" class="navbar">
-      <button class="mainnav" onclick="openTab(event, 'create-tab')">sticker_machine</button>
-      <button class="mainnav" onclick="openTab(event, 'inventory-tab')">sticker_collection</button>
-      <button class="mainnav" onclick="openTab(event, 'stats-tab')">stats</button>
-      <button class="mainnav" onclick="openTab(event, 'about-tab')">faq</button>
-
-    </div>
-
-    <!-- Commenting Out Older Nav Bar
-            <div class="tab">
-              
-              
-                <button class="tablinks" onclick="openTab(event, 'create-tab')">sticker machine</button>
-                <button class="tablinks" onclick="openTab(event, 'inventory-tab')">sticker collection</button>
-                <button class="tablinks" onclick="openTab(event, 'stats-tab')">stats</button>
-                <button class="tablinks" onclick="openTab(event, 'about-tab')">faq</button>
-            </div>
-           -->
-
-    <!-- Create section -->
-
-    <div id="create-tab" class="tabcontent">
-
-      
-                <div class="pizza-container" id="pizza-create-container"><!--
-                    <img class="pizza-frame" src="https://studio.ethereum.org/static/img/cryptopizza/container.jpg"/>
-                    <img src="https://studio.ethereum.org/static/img/cryptopizza/corpus.png"/>
-                  
-                  
-                  
-                    <!-- Ingredients images will be appended to this div -->
-
-      <div class="ingredients"></div>
-
-    </div>
-
-    <div class="input-container">
-      <input type="text" id="create-name" placeholder="enter sticker name..." maxlength="20" />
-
-    </div>
-    <div class="input-container">
-
-      <button class="mainnav" id="button-create">new sticker</button>
-    </div>
-  </div>
-
-  <!-- Inventory section -->
-
-  <div id="inventory-tab" class="tabcontent">
-    <h2>your sticker collection</h2>
-    <!-- Pizza containers will be appended to this div -->
-    <div class="row inventory-list"></div>
-  </div>
-
-  <!-- Stats section -->
-
-  <div id="stats-tab" class="tabcontent">
-    <h2>your stats</h2>
-
-    <h3>stickers created:</h3>
-    <h3>stickers destroyed:</h3>
-    <h3>stickers gifted:</h3>
-
-  </div>
-
-  <!-- FAQ section -->
-
-  <div id="about-tab" class="tabcontent">
-
-    <button class="accordion">What is Depict Limited?
-      <hr></button>
-    <div class="panel">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-
-    <button class="accordion">What is the Tao Blockchain?
-      <hr></button>
-    <div class="panel">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-
-    <button class="accordion">How Do I Use Depict Limited?
-      <hr></button>
-
-    <div class="panel">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
+    
+    var cryptoPizzaABI = [
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "interfaceId",
+				"type": "bytes4"
+			}
+		],
+		"name": "supportsInterface",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_pizzaId",
+				"type": "uint256"
+			}
+		],
+		"name": "getApproved",
+		"outputs": [
+			{
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_to",
+				"type": "address"
+			},
+			{
+				"name": "_pizzaId",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_from",
+				"type": "address"
+			},
+			{
+				"name": "_to",
+				"type": "address"
+			},
+			{
+				"name": "_pizzaId",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "pizzaToOwner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_str",
+				"type": "string"
+			},
+			{
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"name": "generateRandomDna",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "pizzaId",
+				"type": "uint256"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_pizzaId",
+				"type": "uint256"
+			}
+		],
+		"name": "burn",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_pizzaId",
+				"type": "uint256"
+			}
+		],
+		"name": "ownerOf",
+		"outputs": [
+			{
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "pizzas",
+		"outputs": [
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "dna",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"name": "_balance",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"name": "getPizzasByOwner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_pizzaId",
+				"type": "uint256"
+			}
+		],
+		"name": "takeOwnership",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "pizzaId",
+				"type": "uint256"
+			},
+			{
+				"name": "_data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_name",
+				"type": "string"
+			}
+		],
+		"name": "createRandomPizza",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"name": "isApprovedForAll",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "ownerPizzaCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "approved",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "ApprovalForAll",
+		"type": "event"
+	}
+]
+    
+    </script> 
+  </head>
+  <body>
 
     <script>
-      var acc = document.getElementsByClassName("accordion");
-      var i;
-      for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-          this.classList.toggle("active");
-          var panel = this.nextElementSibling;
-          if (panel.style.display === "block") {
-            panel.style.display = "none";
-          } else {
-            panel.style.display = "block";
-          }
-        });
+      var cryptoPizza;
+
+      function startApp() {
+        var cryptoPizzaAddress = "0x757333244ee07ab2dedf54302E40eE13eb909f8e";
+        cryptoZombies = new web3js.eth.Contract(cryptoPizzaABI, cryptoPizzaAddress);
       }
+
+      function getPizzasOwned(owner){
+        return cryptoPizza.methods.balanceOf(owner).call()
+      }
+      
+      
+
+      // 1. Define `zombieToOwner` here
+
+      // 2. Define `getZombiesByOwner` here
+
+      window.addEventListener('load', function() {
+
+        // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+        if (typeof web3 !== 'undefined') {
+          // Use Mist/MetaMask's provider
+          web3js = new Web3(web3.currentProvider);
+        } else {
+          // Handle the case where the user doesn't have Metamask installed
+          // Probably show them a message prompting them to install Metamask
+          
+        }
+
+        // Now you can start your app & access web3 freely:
+        startApp()
+
+      })
     </script>
-
-  </div>
-  </div>
-
-</body>
-<div class="footer">
-  <div class="network-wrapper">Connected to: <span id="network"></span></div>
-  <div class="account-wrapper">Account: <span id="account"></span></div>
-  <div class="balance-wrapper">Balance: <span id="balance"></span></div>
-</div>
-
+    <button onclick="getPizzasOwned">TEST</button>
+  </body>
 </html>
