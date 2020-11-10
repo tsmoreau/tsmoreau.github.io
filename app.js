@@ -27,8 +27,6 @@ let selectedAccount;
 function init() {
 
   console.log("Initializing example");
-  console.log("WalletConnectProvider is", WalletConnectProvider);
-  console.log("Fortmatic is", Fortmatic);
   console.log("window.web3 is", window.web3, "window.ethereum is", window.ethereum);
 
   // Check that the web page is run in a secure context,
@@ -44,23 +42,7 @@ function init() {
   // Tell Web3modal what providers we have available.
   // Built-in web browser provider (only one can exist as a time)
   // like MetaMask, Brave or Opera is added automatically by Web3modal
-  const providerOptions = {
-    walletconnect: {
-      package: WalletConnectProvider,
-      options: {
-        // Mikko's test key - don't copy as your mileage may vary
-        infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
-      }
-    },
-
-    fortmatic: {
-      package: Fortmatic,
-      options: {
-        // Mikko's TESTNET api key
-        key: "pk_test_391E26A3B43A3350"
-      }
-    }
-  };
+ 
 
   web3Modal = new Web3Modal({
     cacheProvider: false, // optional
