@@ -1,222 +1,228 @@
-"use strict";
+<!DOCTYPE html>
+<html lang="en">
 
-/**
- * Example JavaScript code that interacts with the page and Web3 wallets
- */
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/web3@0.20.5/dist/web3.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+  <link rel="stylesheet" href="app.css">
+  <script type="text/javascript" src="app.js"></script>
+  
+  
 
- // Unpkg imports
-const Web3Modal = window.Web3Modal.default;
-const WalletConnectProvider = window.WalletConnectProvider.default;
-const Fortmatic = window.Fortmatic;
-const evmChains = window.evmChains;
+  <!-- The generated javascript and app.js will be substituted in below -->
+  <!-- JAVASCRIPT -->
 
-// Web3modal instance
-let web3Modal
+  <!-- The app.css contents will be substituted in below -->
+  <!-- STYLE -->
 
-// Chosen wallet provider given by the dialog window
-let provider;
-
-
-// Address of the selected account
-let selectedAccount;
-
-
-/**
- * Setup the orchestra
- */
-function init() {
-
-  console.log("Initializing example");
-  console.log("WalletConnectProvider is", WalletConnectProvider);
-  console.log("Fortmatic is", Fortmatic);
-  console.log("window.web3 is", window.web3, "window.ethereum is", window.ethereum);
-
-  // Check that the web page is run in a secure context,
-  // as otherwise MetaMask won't be available
-  if(location.protocol !== 'https:') {
-    // https://ethereum.stackexchange.com/a/62217/620
-    const alert = document.querySelector("#alert-error-https");
-    alert.style.display = "block";
-    document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
-    return;
-  }
-
-  // Tell Web3modal what providers we have available.
-  // Built-in web browser provider (only one can exist as a time)
-  // like MetaMask, Brave or Opera is added automatically by Web3modal
-  const providerOptions = {
-    walletconnect: {
-      package: WalletConnectProvider,
-      options: {
-        // Mikko's test key - don't copy as your mileage may vary
-        infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
+  <script>
+    /* Functionality for tabs - navigation */
+    function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
       }
-    },
-
-    fortmatic: {
-      package: Fortmatic,
-      options: {
-        // Mikko's TESTNET api key
-        key: "pk_test_391E26A3B43A3350"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
       }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
     }
-  };
+  </script>
+  <link href='https://fonts.googleapis.com/css?family=Chivo' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet'>
 
-  web3Modal = new Web3Modal({
-    cacheProvider: false, // optional
-    providerOptions, // required
-    disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
-  });
+</head>
 
-  console.log("Web3Modal instance is", web3Modal);
-}
+<body>
 
+  <div id="main-container">
 
-/**
- * Kick in the UI action after Web3modal dialog has chosen a provider
- */
-async function fetchAccountData() {
+    <!-- Header -->
 
-  // Get a Web3 instance for the wallet
-  const web3 = new Web3(provider);
+    <header>
+      <img src="https://raw.githubusercontent.com/tsmoreau/tsmoreau.github.io/main/depict-logo.svg" width="500">
+    </header>
 
-  console.log("Web3 instance is", web3);
+    <!-- Navigation -->
 
-  // Get connected chain id from Ethereum node
-  const chainId = await web3.eth.getChainId();
-  // Load chain information over an HTTP API
-  const chainData = evmChains.getChain(chainId);
-  document.querySelector("#network-name").textContent = chainData.name;
+    <!-- Main Nav -->
 
-  // Get list of accounts of the connected wallet
-  const accounts = await web3.eth.getAccounts();
+    <div id="mainnav" class="navbar">
+      <button class="mainnav" onclick="openTab(event, 'create-tab')">sticker_machine</button>
+      <button class="mainnav" onclick="openTab(event, 'inventory-tab')">sticker_collection</button>
+      <button class="mainnav" onclick="openTab(event, 'stats-tab')">stats</button>
+      <button class="mainnav" onclick="openTab(event, 'about-tab')">faq</button>
 
-  // MetaMask does not give you all accounts, only the selected account
-  console.log("Got accounts", accounts);
-  selectedAccount = accounts[0];
+    </div>
 
-  document.querySelector("#selected-account").textContent = selectedAccount;
+    <!-- Commenting Out Older Nav Bar
+            <div class="tab">
+              
+              
+                <button class="tablinks" onclick="openTab(event, 'create-tab')">sticker machine</button>
+                <button class="tablinks" onclick="openTab(event, 'inventory-tab')">sticker collection</button>
+                <button class="tablinks" onclick="openTab(event, 'stats-tab')">stats</button>
+                <button class="tablinks" onclick="openTab(event, 'about-tab')">faq</button>
+            </div>
+           -->
 
-  // Get a handl
-  const template = document.querySelector("#template-balance");
-  const accountContainer = document.querySelector("#accounts");
+    <!-- Create section -->
 
-  // Purge UI elements any previously loaded accounts
-  accountContainer.innerHTML = '';
+    <div id="create-tab" class="tabcontent">
 
-  // Go through all accounts and get their ETH balance
-  const rowResolvers = accounts.map(async (address) => {
-    const balance = await web3.eth.getBalance(address);
-    // ethBalance is a BigNumber instance
-    // https://github.com/indutny/bn.js/
-    const ethBalance = web3.utils.fromWei(balance, "ether");
-    const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
-    // Fill in the templated row and put in the document
-    const clone = template.content.cloneNode(true);
-    clone.querySelector(".address").textContent = address;
-    clone.querySelector(".balance").textContent = humanFriendlyBalance;
-    accountContainer.appendChild(clone);
-  });
+      
+                <div class="pizza-container" id="pizza-create-container"><!--
+                    <img class="pizza-frame" src="https://studio.ethereum.org/static/img/cryptopizza/container.jpg"/>
+                    <img src="https://studio.ethereum.org/static/img/cryptopizza/corpus.png"/>
+                  
+                  
+                  
+                    <!-- Ingredients images will be appended to this div -->
 
-  // Because rendering account does its own RPC commucation
-  // with Ethereum node, we do not want to display any results
-  // until data for all accounts is loaded
-  await Promise.all(rowResolvers);
+      <div class="ingredients"></div>
 
-  // Display fully loaded UI for wallet data
-  document.querySelector("#prepare").style.display = "none";
-  document.querySelector("#connected").style.display = "block";
-}
+    </div>
 
+    <div class="input-container">
+      <input type="text" id="create-name" placeholder="enter sticker name..." maxlength="20" />
 
+    </div>
+    <div class="input-container">
 
-/**
- * Fetch account data for UI when
- * - User switches accounts in wallet
- * - User switches networks in wallet
- * - User connects wallet initially
- */
-async function refreshAccountData() {
+      <button class="mainnav" id="button-create">new sticker</button>
+      
+    </div>
+       <div id="prepare">
+            <button class="btn btn-primary" id="btn-connect">
+              Connect wallet
+            </button>
+          </div>
 
-  // If any current data is displayed when
-  // the user is switching acounts in the wallet
-  // immediate hide this data
-  document.querySelector("#connected").style.display = "none";
-  document.querySelector("#prepare").style.display = "block";
+          <div id="connected" style="display: none">
 
-  // Disable button while UI is loading.
-  // fetchAccountData() will take a while as it communicates
-  // with Ethereum node via JSON-RPC and loads chain data
-  // over an API call.
-  document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
-  await fetchAccountData(provider);
-  document.querySelector("#btn-connect").removeAttribute("disabled")
-}
+            <button class="btn btn-primary" id="btn-disconnect">
+              Disconnect wallet
+            </button>
 
+            <hr>
 
-/**
- * Connect wallet button pressed.
- */
-async function onConnect() {
+            <div id="network">
+              <p>
+                <strong>Connected blockchain:</strong> <span id="network-name"></span>
+              </p>
 
-  console.log("Opening a dialog", web3Modal);
-  try {
-    provider = await web3Modal.connect();
-  } catch(e) {
-    console.log("Could not get a wallet connection", e);
-    return;
-  }
+              <p>
+                <strong>Selected account:</strong> <span id="selected-account"></span>
+              </p>
 
-  // Subscribe to accounts change
-  provider.on("accountsChanged", (accounts) => {
-    fetchAccountData();
-  });
+            </div>
 
-  // Subscribe to chainId change
-  provider.on("chainChanged", (chainId) => {
-    fetchAccountData();
-  });
+            <hr>
 
-  // Subscribe to networkId change
-  provider.on("networkChanged", (networkId) => {
-    fetchAccountData();
-  });
+            <h3>All account balances</h3>
 
-  await refreshAccountData();
-}
+            <table class="table table-listing">
+              <thead>
+                <th>Address</th>
+                <th>ETH balance</th>
+              </thead>
 
-/**
- * Disconnect wallet button pressed.
- */
-async function onDisconnect() {
+              <tbody id="accounts">
+              </tbody>
+            </table>
 
-  console.log("Killing the wallet connection", provider);
+            <p>Please try to switch between different accounts in your wallet if your wallet supports this functonality.</p>
 
-  // TODO: Which providers have close method?
-  if(provider.close) {
-    await provider.close();
+          </div>
+  </div>
 
-    // If the cached provider is not cleared,
-    // WalletConnect will default to the existing session
-    // and does not allow to re-scan the QR code with a new wallet.
-    // Depending on your use case you may want or want not his behavir.
-    await web3Modal.clearCachedProvider();
-    provider = null;
-  }
+  <!-- Inventory section -->
 
-  selectedAccount = null;
+  <div id="inventory-tab" class="tabcontent">
+    <h2>your sticker collection</h2>
+    
+    <!-- Pizza containers will be appended to this div -->
+    <div class="row inventory-list"></div>
+  </div>
 
-  // Set the UI back to the initial state
-  document.querySelector("#prepare").style.display = "block";
-  document.querySelector("#connected").style.display = "none";
-}
+    <div id="network">
+              <p>
+                <strong>Connected blockchain:</strong> <span id="network-name"></span>
+              </p>
 
+              <p>
+                <strong>Selected account:</strong> <span id="selected-account"></span>
+              </p>
 
-/**
- * Main entry point.
- */
-window.addEventListener('load', async () => {
-  init();
-  document.querySelector("#btn-connect").addEventListener("click", onConnect);
-  document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
-});
+            </div>
+    
+    
+  <!-- Stats section -->
+
+  <div id="stats-tab" class="tabcontent">
+    <h2>your stats</h2>
+
+    <h3>stickers created:</h3>
+    <h3>stickers destroyed:</h3>
+    <h3>stickers gifted:</h3>
+
+  </div>
+
+  <!-- FAQ section -->
+
+  <div id="about-tab" class="tabcontent">
+
+    <button class="accordion">What is Depict Limited?
+      <hr></button>
+    <div class="panel">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+
+    <button class="accordion">What is the Tao Blockchain?
+      <hr></button>
+    <div class="panel">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+
+    <button class="accordion">How Do I Use Depict Limited?
+      <hr></button>
+
+    <div class="panel">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.display === "block") {
+            panel.style.display = "none";
+          } else {
+            panel.style.display = "block";
+          }
+        });
+      }
+    </script>
+
+  </div>
+  </div>
+
+</body>
+<div class="footer">
+  <div class="network-wrapper">Connected to: <span id="network"></span></div>
+  <div class="account-wrapper">Account: <span id="account"></span></div>
+  <div class="balance-wrapper">Balance: <span id="#balance"></span></div>
+</div>
+
+</html>
