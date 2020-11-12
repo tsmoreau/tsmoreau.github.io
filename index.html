@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8">
   <script type="text/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript" src="https://unpkg.com/web3@0.20.5/dist/web3.min.js"></script>
   <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
   <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
   <link rel="stylesheet" href="app.css">
   <script type="text/javascript" src="app.js"></script>
   
@@ -114,9 +114,32 @@
 
             <hr>
 
+            
+            
+            
+            
            
 
           </div>
+      
+      
+      <div>
+    <button id="getSecretWord">Tell me a secret!</button><h3><span style="font-weight: bold;" id="secretWordOutput"></span></h3>
+  </div>
+
+  <br> <br>
+
+  <div>
+    <h3> New Secret <!-- ADD A SUBHEADING --></h3>
+    <input id="newSecretWord" type="text" name="newSecretWord">
+    <button id="setSecretWord">Set!</button><h3><span id="setBtnResponse"></span></h3>
+  </div>
+
+  <br>
+
+  <span class="hint"><strong>Hint:</strong> Open the browser developer console to view any errors and warnings. Changes in the local file will automatically show up here. If not, double check your code. </span>
+
+      
   </div>
 
   <!-- Inventory section -->
@@ -128,16 +151,7 @@
     <div class="row inventory-list"></div>
   </div>
 
-    <div id="network">
-              <p>
-                <strong>Connected blockchain:</strong> <span id="network-name"></span>
-              </p>
-
-              <p>
-                <strong>Selected account:</strong> <span id="selected-account"></span>
-              </p>
-
-            </div>
+    
     
     
   <!-- Stats section -->
