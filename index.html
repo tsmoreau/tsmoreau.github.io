@@ -1,146 +1,223 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+"use strict";
 
-    <meta charset="UTF-8">
-    <title>MetaMask Login Demo</title>
+/**
+ * Example JavaScript code that interacts with the page and Web3 wallets
+ */
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
+ // Unpkg imports
+const Web3Modal = window.Web3Modal.default;
+const WalletConnectProvider = window.WalletConnectProvider.default;
+const Fortmatic = window.Fortmatic;
+const evmChains = window.evmChains;
 
-    <style>
-        html, body {
-            width: 100%;
-            height: 100%;
-        }
+// Web3modal instance
+let web3Modal
 
-        .container {
-            width: 100%;
-            height: 100%;
+// Chosen wallet provider given by the dialog window
+let provider;
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .label {
-            margin-top: 30px;
-            margin-bottom: 10px;
-        }
+// Address of the selected account
+let selectedAccount;
 
-        .input-group {
-            margin-bottom: 10px;
-            max-width: 1000px;
-        }
-    </style>
 
-</head>
-<body>
+/**
+ * Setup the orchestra
+ */
+function init() {
 
-   
-    <script>
-        var web3;
+  console.log("Initializing example");
+  console.log("WalletConnectProvider is", WalletConnectProvider);
+  console.log("Fortmatic is", Fortmatic);
+  console.log("window.web3 is", window.web3, "window.ethereum is", window.ethereum);
 
-        function createNonce() {
+  // Check that the web page is run in a secure context,
+  // as otherwise MetaMask won't be available
+  if(location.protocol !== 'https:') {
+    // https://ethereum.stackexchange.com/a/62217/620
+    const alert = document.querySelector("#alert-error-https");
+    alert.style.display = "block";
+    document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
+    return;
+  }
 
-            var dict = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
-            var result = "";
+  // Tell Web3modal what providers we have available.
+  // Built-in web browser provider (only one can exist as a time)
+  // like MetaMask, Brave or Opera is added automatically by Web3modal
+  const providerOptions = {
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        // Mikko's test key - don't copy as your mileage may vary
+        infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
+      }
+    },
 
-            for(var i = 0; i < 10; i++) {
-                var rand = Math.floor(Math.random() * 36);
-                result += dict[rand];
-            }
+    fortmatic: {
+      package: Fortmatic,
+      options: {
+        // Mikko's TESTNET api key
+        key: "pk_test_391E26A3B43A3350"
+      }
+    }
+  };
 
-            return result;
+  web3Modal = new Web3Modal({
+    cacheProvider: false, // optional
+    providerOptions, // required
+    disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+  });
 
-        }
+  console.log("Web3Modal instance is", web3Modal);
+}
 
-        function getAddress() {
-            return new Promise(function(resolve, reject) {
 
-                web3 = new Web3(window.ethereum);
+/**
+ * Kick in the UI action after Web3modal dialog has chosen a provider
+ */
+async function fetchAccountData() {
 
-                web3.eth.getCoinbase(function(error, coinbase) {
+  // Get a Web3 instance for the wallet
+  const web3 = new Web3(provider);
 
-                    if(!coinbase) window.alert('MetaMask not activated!');
+  console.log("Web3 instance is", web3);
 
-                    var publicAddress = coinbase.toLowerCase();
-                    resolve(publicAddress);
+  // Get connected chain id from Ethereum node
+  const chainId = await web3.eth.getChainId();
+  // Load chain information over an HTTP API
 
-                });
+  // Get list of accounts of the connected wallet
+  const accounts = await web3.eth.getAccounts();
 
-            });
-        }
+  // MetaMask does not give you all accounts, only the selected account
+  console.log("Got accounts", accounts);
+  selectedAccount = accounts[0];
 
-        function getSignature(publicAddress) {
-            return new Promise(function(resolve, reject) {
+  document.querySelector("#selected-account").textContent = selectedAccount;
 
-                var data = createNonce();
+  // Get a handl
+  const template = document.querySelector("#template-balance");
+  const accountContainer = document.querySelector("#accounts");
 
-                web3.eth.personal.sign(
-                    data,
-                    publicAddress,
-                    '', // password is ignored by metamask
-                    function(error, signature) {
+  // Purge UI elements any previously loaded accounts
+  accountContainer.innerHTML = '';
 
-                        var result = {
-                            address: publicAddress,
-                            nonce: data,
-                            signature: signature
-                        };
+  // Go through all accounts and get their ETH balance
+  const rowResolvers = accounts.map(async (address) => {
+    const balance = await web3.eth.getBalance(address);
+    // ethBalance is a BigNumber instance
+    // https://github.com/indutny/bn.js/
+    const ethBalance = web3.utils.fromWei(balance, "ether");
+    const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
+    // Fill in the templated row and put in the document
+    const clone = template.content.cloneNode(true);
+    clone.querySelector(".address").textContent = address;
+    clone.querySelector(".balance").textContent = humanFriendlyBalance;
+    accountContainer.appendChild(clone);
+  });
 
-                        resolve(result);
+  // Because rendering account does its own RPC commucation
+  // with Ethereum node, we do not want to display any results
+  // until data for all accounts is loaded
+  await Promise.all(rowResolvers);
 
-                    }
-                );
+  // Display fully loaded UI for wallet data
+  document.querySelector("#prepare").style.display = "none";
+  document.querySelector("#connected").style.display = "block";
+}
 
-            });
-        }
 
-        function showWeb3Result(result) {
 
-            document.getElementById('text-address').value = result.address;
-            document.getElementById('text-nonce').value = result.nonce;
-            document.getElementById('text-signature').value = result.signature;
+/**
+ * Fetch account data for UI when
+ * - User switches accounts in wallet
+ * - User switches networks in wallet
+ * - User connects wallet initially
+ */
+async function refreshAccountData() {
 
-            return result;
+  // If any current data is displayed when
+  // the user is switching acounts in the wallet
+  // immediate hide this data
+  document.querySelector("#connected").style.display = "none";
+  document.querySelector("#prepare").style.display = "block";
 
-        }
+  // Disable button while UI is loading.
+  // fetchAccountData() will take a while as it communicates
+  // with Ethereum node via JSON-RPC and loads chain data
+  // over an API call.
+  document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
+  await fetchAccountData(provider);
+  document.querySelector("#btn-connect").removeAttribute("disabled")
+}
 
-        function getToken(result) {
-            return new Promise(function(resolve, reject) {
 
-                axios.post('/api/auth', {
-                    'publicAddress': result.address,
-                    'nonce': result.nonce,
-                    'signature': result.signature
-                }).then(function(response) { resolve(response.data.token); })
+/**
+ * Connect wallet button pressed.
+ */
+async function onConnect() {
 
-            });
-        }
+  console.log("Opening a dialog", web3Modal);
+  try {
+    provider = await web3Modal.connect();
+  } catch(e) {
+    console.log("Could not get a wallet connection", e);
+    return;
+  }
 
-        function showBackendResult(token) {
+  // Subscribe to accounts change
+  provider.on("accountsChanged", (accounts) => {
+    fetchAccountData();
+  });
 
-            document.getElementById('text-token').value = token;
+  // Subscribe to chainId change
+  provider.on("chainChanged", (chainId) => {
+    fetchAccountData();
+  });
 
-        }
+  // Subscribe to networkId change
+  provider.on("networkChanged", (networkId) => {
+    fetchAccountData();
+  });
 
-        function buttonClicked() {
+  await refreshAccountData();
+}
 
-            window.ethereum.enable()
-                .then(getAddress)
-                .then(getSignature)
-                .then(showWeb3Result)
-                .then(getToken)
-                .then(showBackendResult);
+/**
+ * Disconnect wallet button pressed.
+ */
+async function onDisconnect() {
 
-        }
-    </script>
+  console.log("Killing the wallet connection", provider);
+
+  // TODO: Which providers have close method?
+  if(provider.close) {
+    await provider.close();
+
+    // If the cached provider is not cleared,
+    // WalletConnect will default to the existing session
+    // and does not allow to re-scan the QR code with a new wallet.
+    // Depending on your use case you may want or want not his behavir.
+    await web3Modal.clearCachedProvider();
+    provider = null;
+  }
+
+  selectedAccount = null;
+
+  // Set the UI back to the initial state
+  document.querySelector("#prepare").style.display = "block";
+  document.querySelector("#connected").style.display = "none";
+}
+
+
+/**
+ * Main entry point.
+ */
+window.addEventListener('load', async () => {
+  init();
+  document.querySelector("#btn-connect").addEventListener("click", onConnect);
+  document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
+});
   
   
    
@@ -166,9 +243,7 @@
 
   <br>
     
-    <div class="network-wrapper">Network: <span id="network"></span></div>
-<div class="account-wrapper">Account: <span id="account"></span></div>
-<div class="balance-wrapper">Balance: <span id="balance"></span></div>
+  
     
   <script src="javascript/web3.min.js"></script>
   <script src="app.js"></script>
