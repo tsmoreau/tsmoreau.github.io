@@ -7,8 +7,9 @@
     <!-- Get some bootstrap default styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
-  <body> 
-<div class="container">
+  <body>
+    <!-- Construct a Bootstrap layout -->
+    <div class="container">
       <div class="row">
         <div class="col-md-12">
           <h1>Web3modal example for vanille JavaScript and HTML</h1>
@@ -95,38 +96,7 @@
     <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
 
-  
-  
-   
-
-  <div>
-      <h3> Tell me a secret! <!-- ADD A SUBHEADING --></h3>
-    <button id="getSecretWord">Retrieve Currect Secret from TAO</button><h3><span style="font-weight: bold;" id="secretWordOutput"></span></h3>
-  </div>
-
-  <br> <br>
-
-  <div>
-    <h3> New Secret <!-- ADD A SUBHEADING --></h3>
-    <input id="newSecretWord" type="text" name="newSecretWord">
-    <button id="setSecretWord">Set!</button><h3><span id="setBtnResponse"></span></h3>
-      
-        <br> <br>
-       <div style= "margin: auto;">
-
-        <button class="btn btn-primary" onclick="buttonClicked()">Connect</button>
-        </div>
-  </div>
-
-  <br>
-    
-  
-    
-  <script src="javascript/web3.min.js"></script>
-  <script src="app.js"></script>
-  
-  
-  
-
-</body>
+    <!-- This is our example code -->
+    <script type="text/javascript" src="/app.js"></script>
+  </body>
 </html>
