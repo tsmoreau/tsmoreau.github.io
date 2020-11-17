@@ -58,7 +58,7 @@ window.App = {
 
     Promise.resolve(SecretWord)
     .then(function(string){
-			document.getElementById("secretWordOutput").innerHTML = " >>>>> " + string; // Allowing the JavaScript to interact with our HTML
+			document.getElementById("secretWordOutput").innerHTML = " -> " + string; // Allowing the JavaScript to interact with our HTML
     })
   },
 
