@@ -154,3 +154,41 @@ window.addEventListener('load', function() {
 
 });
 
+
+const networkEl = document.querySelector("#network");
+const refreshButtonEl = document.querySelector("#refresh");
+const incrementButtonEl = document.querySelector("#increment");
+const accountEl = document.querySelector("#account");
+const balanceEl =  document.querySelector("#balance");
+
+web3.version.getNetwork((err, netId) => {
+  
+  // If this is the Main net, disable the increment button
+  if (netId === '1') {
+    disableTransactions = true;
+    incrementButtonEl.classList = ['disabled'];
+  }
+  
+  const network =
+    {
+      1: "Mainnet",
+      3: "Ropsten Test Network",
+      558: "Tao Network"
+    }[netId] || "Unknown Network";
+
+  networkEl.innerText = network;
+});
+
+web3.eth.getBlockNumber((error, result) => {
+  console.log(result);
+})
+
+web3.eth.getAccounts((error, result) => {
+  accountEl.innerText = result;
+  
+  web3.eth.getBalance(result[0], function(error, result) {
+    var val = web3.fromWei(result);
+    balanceEl.innerText = `${val} ETH`;
+  });
+})
+
