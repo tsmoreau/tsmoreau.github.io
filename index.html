@@ -180,8 +180,10 @@
 <script>
 import mergeImages from 'merge-images';
  
-mergeImages(['/body.png', '/eyes.png', '/mouth.png'])
-  .then(b64 => document.querySelector('img').src = b64);</script>
+mergeImages(['body.png', 'eyes.png', 'mouth.png'])
+  .then((img) => {
+    // Save image as file
+    img.write('out.png', () => console.log('done'));
 
 <br>
   
