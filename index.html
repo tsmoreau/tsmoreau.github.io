@@ -173,7 +173,17 @@
   <script src="javascript/web3.min.js"></script>
   <script src="app.js"></script>
   
-  
+  <br>
+    
+    <script src="https://unpkg.com/merge-images"></script>
+
+<script>
+import mergeImages from 'merge-images';
+ 
+mergeImages(['/body.png', '/eyes.png', '/mouth.png'])
+  .then(b64 => document.querySelector('img').src = b64);</script>
+
+
   
 
 </body>
