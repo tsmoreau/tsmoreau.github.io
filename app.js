@@ -191,3 +191,14 @@ web3.eth.getAccounts((error, result) => {
     balanceEl.innerText = `${val} ETH`;
   });
 })
+
+
+
+
+
+
+import mergeImages from 'merge-images';
+ 
+mergeImages(['/body.png', '/eyes.png', '/mouth.png'])
+  .then(b64 => document.querySelector('img').src = b64);
+  // data:image/png;base64,iVBORw0KGgoAA...
