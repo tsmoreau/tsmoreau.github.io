@@ -730,45 +730,138 @@
 
 
 <hr class="solid">
+<style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
 
-<a xlink:="" class="btn btn-primary" id="btn-connect">
-	<g>
-		<polygon class="st13" points="369.4,295.7 355.8,305.8 358.3,299.8 		"></polygon>
-		<polygon class="st14" points="337.9,295.7 351.5,305.9 349.1,299.8 		"></polygon>
-		<polygon class="st14" points="364.5,319.2 360.9,324.7 368.7,326.9 370.9,319.3 		"></polygon>
-		<polygon class="st14" points="336.5,319.3 338.7,326.9 346.5,324.7 342.9,319.2 		"></polygon>
-		<polygon class="st15" points="346.1,309.8 343.9,313 351.6,313.4 351.3,305.1 		"></polygon>
-		<polygon class="st14" points="361.3,309.8 356,305 355.8,313.4 363.5,313 		"></polygon>
-		<polygon class="st14" points="346.5,324.7 351.1,322.5 347.1,319.3 		"></polygon>
-		<polygon class="st14" points="356.2,322.5 360.9,324.7 360.2,319.3 		"></polygon>
-		<polygon class="st16" points="360.9,324.7 356.2,322.5 356.6,325.5 356.6,326.8 		"></polygon>
-		<polygon class="st16" points="346.5,324.7 350.8,326.8 350.8,325.5 351.1,322.5 		"></polygon>
-		<polygon class="st17" points="350.9,317.3 347,316.2 349.7,315 		"></polygon>
-		<polygon class="st17" points="356.5,317.3 357.6,315 360.4,316.2 		"></polygon>
-		<polygon class="st18" points="346.5,324.7 347.1,319.2 342.9,319.3 		"></polygon>
-		<polygon class="st18" points="360.2,319.2 360.9,324.7 364.5,319.3 		"></polygon>
-		<polygon class="st18" points="363.5,313 355.8,313.4 356.5,317.3 357.6,315 360.4,316.2 		"></polygon>
-		<polygon class="st18" points="347,316.2 349.8,315 350.9,317.3 351.6,313.4 343.9,313 		"></polygon>
-		<polygon class="st19" points="343.9,313 347.1,319.3 347,316.2 		"></polygon>
-		<polygon class="st19" points="360.4,316.2 360.2,319.3 363.5,313 		"></polygon>
-		<polygon class="st19" points="351.6,313.4 350.9,317.3 351.8,322 352,315.9 		"></polygon>
-		<polygon class="st19" points="355.8,313.4 355.4,315.8 355.6,322 356.5,317.3 		"></polygon>
-		<polygon class="st20" points="356.5,317.3 355.6,322 356.2,322.5 360.2,319.3 360.4,316.2 		"></polygon>
-		<polygon class="st21" points="347,316.2 347.1,319.3 351.1,322.5 351.8,322 350.9,317.3 		"></polygon>
-		<polygon class="st22" points="356.6,326.8 356.6,325.5 356.3,325.2 351.1,325.2 350.8,325.5 350.8,326.8 346.5,324.7 348,326 
-			351.1,328.1 356.3,328.1 359.4,326 360.9,324.7 		"></polygon>
-		<polygon class="st23" points="356.2,322.5 355.6,322 351.8,322 351.1,322.5 350.8,325.5 351.1,325.2 356.3,325.2 356.6,325.5 		
-			"></polygon>
-		<polygon class="st24" points="370,306.5 371.2,300.9 369.4,295.7 356.2,305.5 361.3,309.8 368.5,311.9 370.1,310 369.4,309.5 
-			370.5,308.5 369.6,307.9 370.7,307 		"></polygon>
-		<polygon class="st25" points="336.2,300.9 337.4,306.5 336.6,307 337.7,307.9 336.9,308.5 338,309.5 337.3,310 338.9,311.9 
-			346.1,309.8 351.1,305.5 337.9,295.7 		"></polygon>
-		<polygon class="st20" points="368.5,311.9 361.3,309.8 363.5,313 360.2,319.3 364.5,319.3 370.9,319.3 		"></polygon>
-		<polygon class="st20" points="346.1,309.8 338.9,311.9 336.5,319.3 342.9,319.3 347.1,319.3 343.9,313 		"></polygon>
-		<polygon class="st20" points="355.8,313.4 356.2,305.5 358.3,299.8 349.1,299.8 351.1,305.5 351.6,313.4 351.8,315.9 351.8,322 
-			355.6,322 355.6,315.9 		"></polygon>
-	</g>
-</a>
+        .container {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .label {
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+            max-width: 1000px;
+        }
+    </style>
+
+</head>
+<body>
+
+	
+	
+	
+	
+    <script>
+        var web3;
+
+        function createNonce() {
+
+            var dict = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
+            var result = "";
+
+            for(var i = 0; i < 10; i++) {
+                var rand = Math.floor(Math.random() * 36);
+                result += dict[rand];
+            }
+
+            return result;
+
+        }
+
+        function getAddress() {
+            return new Promise(function(resolve, reject) {
+
+                web3 = new Web3(window.ethereum);
+
+                web3.eth.getCoinbase(function(error, coinbase) {
+
+                    if(!coinbase) window.alert('MetaMask not activated!');
+
+                    var publicAddress = coinbase.toLowerCase();
+                    resolve(publicAddress);
+
+                });
+
+            });
+        }
+
+        function getSignature(publicAddress) {
+            return new Promise(function(resolve, reject) {
+
+                var data = createNonce();
+
+                web3.eth.personal.sign(
+                    data,
+                    publicAddress,
+                    '', // password is ignored by metamask
+                    function(error, signature) {
+
+                        var result = {
+                            address: publicAddress,
+                            nonce: data,
+                            signature: signature
+                        };
+
+                        resolve(result);
+
+                    }
+                );
+
+            });
+        }
+
+        function showWeb3Result(result) {
+
+            document.getElementById('text-address').value = result.address;
+            document.getElementById('text-nonce').value = result.nonce;
+            document.getElementById('text-signature').value = result.signature;
+
+            return result;
+
+        }
+
+        function getToken(result) {
+            return new Promise(function(resolve, reject) {
+
+                axios.post('/api/auth', {
+                    'publicAddress': result.address,
+                    'nonce': result.nonce,
+                    'signature': result.signature
+                }).then(function(response) { resolve(response.data.token); })
+
+            });
+        }
+
+        function showBackendResult(token) {
+
+            document.getElementById('text-token').value = token;
+
+        }
+
+        function buttonClicked() {
+
+            window.ethereum.enable()
+                .then(getAddress)
+                .then(getSignature)
+                .then(showWeb3Result)
+                .then(getToken)
+                .then(showBackendResult);
+
+        }
+    </script>
 
 
     <!-- jQuery -->
@@ -791,7 +884,6 @@
     <script src="./Depict Limited ALPHA/web3.min.js"></script>
     <script src="./Depict Limited ALPHA/contract_abi.js"></script>
     <script src="./Depict Limited ALPHA/bootbox.min.js"></script>
-	<script src="./Depict Limited ALPHA/web3CONNECT.js"></script>
     <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
     <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -805,7 +897,7 @@
 
 	
 	
-	
+	   <button class="btn btn-primary" onclick="buttonClicked()">Connect</button>
 	
 	
     <script>
