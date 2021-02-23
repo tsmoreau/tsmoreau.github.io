@@ -1,0 +1,142 @@
+/**
+ *
+ * Style.css
+ *
+ */
+
+
+.container {
+    padding-top: 50px;
+    width: 80%;
+}
+.box {
+    position: relative;
+    background: #ffffff;
+    width: 100%;
+}
+.box-header {
+    color: #444;
+    display: block;
+    padding: 10px;
+    position: relative;
+    border-bottom: 1px solid #f4f4f4;
+    margin-bottom: 10px;
+}
+.box-tools {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+.dropzone-wrapper {
+    border: 2px dashed #91b0b3;
+    color: #92b0b3;
+    position: relative;
+    height: 150px;
+}
+.dropzone-desc {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    width: 40%;
+    top: 50px;
+    font-size: 16px;
+}
+.dropzone,
+.dropzone:focus {
+    position: absolute;
+    outline: none !important;
+    width: 100%;
+    height: 150px;
+    cursor: pointer;
+    opacity: 0;
+}
+.dropzone-wrapper:hover,
+.dropzone-wrapper.dragover {
+    background: #ecf0f5;
+}
+.preview-zone {
+    text-align: center;
+}
+.preview-zone .box {
+    box-shadow: none;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+
+
+body {
+    
+    background: rgba(242,51,91,1);
+    background-image: linear-gradient(0deg, rgba(242,51,91,1) 0%, rgba(63,182,255,1) 100%);
+    color: #FCE8DF;
+    background-repeat: no-repeat;
+    font-family: 'Chivo', 'Impact', 'Calibri';
+    text-align: center;
+    height: 100%;
+}
+
+.navbar-inner {
+    background:transparent;
+}
+
+
+.nav-link{
+   font-family: 'Electrolize', 'Impact', 'Calibri';
+  font-size: 18px;
+  transition: all .4s ease-in-out;
+  color: white;
+}
+
+
+
+.nav-link:hover { transform: translateY(3px); 
+color: white;
+}
+.nav-link:active { transform: translateY(3px); 
+}
+
+.swiper-button-prev, 
+.swiper-button-next {
+  background-image:none
+}
+
+.swiper-pagination-bullet {
+        background-color: transparent;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+        background-color: #fff;
+    }
+
+
+
+.swiper1-wrapper {
+  height: 500px;
+}
+  
+.swiper-container {
+  width: 100%;
+  padding-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: "white";
+  background-color: transparent;
+}
+
+.swiper-slide {
+  background-position: center;
+  
+  max-width: 550px;
+  
+  overflow: hidden;
+}
+
