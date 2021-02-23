@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0040)https://digitalartchain.com/publish.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     
@@ -172,9 +171,108 @@
             </div>
         </form>
     </section>
+    <script>
+      var web3;
 
+      function createNonce() {
+
+          var dict = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
+          var result = "";
+
+          for(var i = 0; i < 10; i++) {
+              var rand = Math.floor(Math.random() * 36);
+              result += dict[rand];
+          }
+
+          return result;
+
+      }
+
+      function getAddress() {
+          return new Promise(function(resolve, reject) {
+
+              web3 = new Web3(window.ethereum);
+
+              web3.eth.getCoinbase(function(error, coinbase) {
+
+                  if(!coinbase) window.alert('MetaMask not activated!');
+
+                  var publicAddress = coinbase.toLowerCase();
+                  resolve(publicAddress);
+
+              });
+
+          });
+      }
+
+      function getSignature(publicAddress) {
+          return new Promise(function(resolve, reject) {
+
+              var data = createNonce();
+
+              web3.eth.personal.sign(
+                  data,
+                  publicAddress,
+                  '', // password is ignored by metamask
+                  function(error, signature) {
+
+                      var result = {
+                          address: publicAddress,
+                          nonce: data,
+                          signature: signature
+                      };
+
+                      resolve(result);
+
+                  }
+              );
+
+          });
+      }
+
+      function showWeb3Result(result) {
+
+          document.getElementById('text-address').value = result.address;
+          document.getElementById('text-nonce').value = result.nonce;
+          document.getElementById('text-signature').value = result.signature;
+
+          return result;
+
+      }
+
+      function getToken(result) {
+          return new Promise(function(resolve, reject) {
+
+              axios.post('/api/auth', {
+                  'publicAddress': result.address,
+                  'nonce': result.nonce,
+                  'signature': result.signature
+              }).then(function(response) { resolve(response.data.token); })
+
+          });
+      }
+
+      function showBackendResult(token) {
+
+          document.getElementById('text-token').value = token;
+
+      }
+
+      function buttonClicked() {
+
+          window.ethereum.enable()
+              .then(getAddress)
+              .then(getSignature)
+              .then(showWeb3Result)
+              .then(getToken)
+              .then(showBackendResult);
+
+      }
+  </script>
+
+    
     <hr class="solid">
-
+<!---
     <div class="container1">
         <div class="swiper-container">
           <div class="swiper-wrapper">
@@ -719,6 +817,8 @@
     
     </div>
           </div>
+        -->
+
           <!-- Add Pagination -->
           <div class="swiper-pagination"></div>
           <!-- Add Scrollbar -->
@@ -734,49 +834,238 @@
           </div>
         </div>
       </div>
-
+    
 
 <hr class="solid">
 
-<a xlink:="" class="btn btn-primary" id="btn-connect">
-	<g>
-		<polygon class="st13" points="369.4,295.7 355.8,305.8 358.3,299.8 		"></polygon>
-		<polygon class="st14" points="337.9,295.7 351.5,305.9 349.1,299.8 		"></polygon>
-		<polygon class="st14" points="364.5,319.2 360.9,324.7 368.7,326.9 370.9,319.3 		"></polygon>
-		<polygon class="st14" points="336.5,319.3 338.7,326.9 346.5,324.7 342.9,319.2 		"></polygon>
-		<polygon class="st15" points="346.1,309.8 343.9,313 351.6,313.4 351.3,305.1 		"></polygon>
-		<polygon class="st14" points="361.3,309.8 356,305 355.8,313.4 363.5,313 		"></polygon>
-		<polygon class="st14" points="346.5,324.7 351.1,322.5 347.1,319.3 		"></polygon>
-		<polygon class="st14" points="356.2,322.5 360.9,324.7 360.2,319.3 		"></polygon>
-		<polygon class="st16" points="360.9,324.7 356.2,322.5 356.6,325.5 356.6,326.8 		"></polygon>
-		<polygon class="st16" points="346.5,324.7 350.8,326.8 350.8,325.5 351.1,322.5 		"></polygon>
-		<polygon class="st17" points="350.9,317.3 347,316.2 349.7,315 		"></polygon>
-		<polygon class="st17" points="356.5,317.3 357.6,315 360.4,316.2 		"></polygon>
-		<polygon class="st18" points="346.5,324.7 347.1,319.2 342.9,319.3 		"></polygon>
-		<polygon class="st18" points="360.2,319.2 360.9,324.7 364.5,319.3 		"></polygon>
-		<polygon class="st18" points="363.5,313 355.8,313.4 356.5,317.3 357.6,315 360.4,316.2 		"></polygon>
-		<polygon class="st18" points="347,316.2 349.8,315 350.9,317.3 351.6,313.4 343.9,313 		"></polygon>
-		<polygon class="st19" points="343.9,313 347.1,319.3 347,316.2 		"></polygon>
-		<polygon class="st19" points="360.4,316.2 360.2,319.3 363.5,313 		"></polygon>
-		<polygon class="st19" points="351.6,313.4 350.9,317.3 351.8,322 352,315.9 		"></polygon>
-		<polygon class="st19" points="355.8,313.4 355.4,315.8 355.6,322 356.5,317.3 		"></polygon>
-		<polygon class="st20" points="356.5,317.3 355.6,322 356.2,322.5 360.2,319.3 360.4,316.2 		"></polygon>
-		<polygon class="st21" points="347,316.2 347.1,319.3 351.1,322.5 351.8,322 350.9,317.3 		"></polygon>
-		<polygon class="st22" points="356.6,326.8 356.6,325.5 356.3,325.2 351.1,325.2 350.8,325.5 350.8,326.8 346.5,324.7 348,326 
-			351.1,328.1 356.3,328.1 359.4,326 360.9,324.7 		"></polygon>
-		<polygon class="st23" points="356.2,322.5 355.6,322 351.8,322 351.1,322.5 350.8,325.5 351.1,325.2 356.3,325.2 356.6,325.5 		
-			"></polygon>
-		<polygon class="st24" points="370,306.5 371.2,300.9 369.4,295.7 356.2,305.5 361.3,309.8 368.5,311.9 370.1,310 369.4,309.5 
-			370.5,308.5 369.6,307.9 370.7,307 		"></polygon>
-		<polygon class="st25" points="336.2,300.9 337.4,306.5 336.6,307 337.7,307.9 336.9,308.5 338,309.5 337.3,310 338.9,311.9 
-			346.1,309.8 351.1,305.5 337.9,295.7 		"></polygon>
-		<polygon class="st20" points="368.5,311.9 361.3,309.8 363.5,313 360.2,319.3 364.5,319.3 370.9,319.3 		"></polygon>
-		<polygon class="st20" points="346.1,309.8 338.9,311.9 336.5,319.3 342.9,319.3 347.1,319.3 343.9,313 		"></polygon>
-		<polygon class="st20" points="355.8,313.4 356.2,305.5 358.3,299.8 349.1,299.8 351.1,305.5 351.6,313.4 351.8,315.9 351.8,322 
-			355.6,322 355.6,315.9 		"></polygon>
-	</g>
-</a>
+<script>"use strict";
 
+  /**
+   * Example JavaScript code that interacts with the page and Web3 wallets
+   */
+  
+   // Unpkg imports
+  const Web3Modal = window.Web3Modal.default;
+  const WalletConnectProvider = window.WalletConnectProvider.default;
+  const Fortmatic = window.Fortmatic;
+  const evmChains = window.evmChains;
+  
+  // Web3modal instance
+  let web3Modal
+  
+  // Chosen wallet provider given by the dialog window
+  let provider;
+  
+  
+  // Address of the selected account
+  let selectedAccount;
+  
+  
+  /**
+   * Setup the orchestra
+   */
+  function init() {
+  
+    console.log("Initializing example");
+    console.log("WalletConnectProvider is", WalletConnectProvider);
+    console.log("Fortmatic is", Fortmatic);
+    console.log("window.web3 is", window.web3, "window.ethereum is", window.ethereum);
+  
+    // Check that the web page is run in a secure context,
+    // as otherwise MetaMask won't be available
+    if(location.protocol !== 'https:') {
+      // https://ethereum.stackexchange.com/a/62217/620
+      const alert = document.querySelector("#alert-error-https");
+      alert.style.display = "block";
+      document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
+      return;
+    }
+  
+    // Tell Web3modal what providers we have available.
+    // Built-in web browser provider (only one can exist as a time)
+    // like MetaMask, Brave or Opera is added automatically by Web3modal
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          // Mikko's test key - don't copy as your mileage may vary
+          infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
+        }
+      },
+  
+      fortmatic: {
+        package: Fortmatic,
+        options: {
+          // Mikko's TESTNET api key
+          key: "pk_test_391E26A3B43A3350"
+        }
+      }
+    };
+  
+    web3Modal = new Web3Modal({
+      cacheProvider: false, // optional
+      providerOptions, // required
+      disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+    });
+  
+    console.log("Web3Modal instance is", web3Modal);
+  }
+  
+  
+  /**
+   * Kick in the UI action after Web3modal dialog has chosen a provider
+   */
+  async function fetchAccountData() {
+  
+    // Get a Web3 instance for the wallet
+    const web3 = new Web3(provider);
+  
+    console.log("Web3 instance is", web3);
+  
+    // Get connected chain id from Ethereum node
+    const chainId = await web3.eth.getChainId();
+    // Load chain information over an HTTP API
+    const chainData = evmChains.getChain(chainId);
+    document.querySelector("#network-name").textContent = chainData.name;
+  
+    // Get list of accounts of the connected wallet
+    const accounts = await web3.eth.getAccounts();
+  
+    // MetaMask does not give you all accounts, only the selected account
+    console.log("Got accounts", accounts);
+    selectedAccount = accounts[0];
+  
+    document.querySelector("#selected-account").textContent = selectedAccount;
+  
+    // Get a handl
+    const template = document.querySelector("#template-balance");
+    const accountContainer = document.querySelector("#accounts");
+  
+    // Purge UI elements any previously loaded accounts
+    accountContainer.innerHTML = '';
+  
+    // Go through all accounts and get their ETH balance
+    const rowResolvers = accounts.map(async (address) => {
+      const balance = await web3.eth.getBalance(address);
+      // ethBalance is a BigNumber instance
+      // https://github.com/indutny/bn.js/
+      const ethBalance = web3.utils.fromWei(balance, "ether");
+      const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
+      // Fill in the templated row and put in the document
+      const clone = template.content.cloneNode(true);
+      clone.querySelector(".address").textContent = address;
+      clone.querySelector(".balance").textContent = humanFriendlyBalance;
+      accountContainer.appendChild(clone);
+    });
+  
+    // Because rendering account does its own RPC commucation
+    // with Ethereum node, we do not want to display any results
+    // until data for all accounts is loaded
+    await Promise.all(rowResolvers);
+  
+    // Display fully loaded UI for wallet data
+    document.querySelector("#prepare").style.display = "none";
+    document.querySelector("#connected").style.display = "block";
+  }
+  
+  
+  
+  /**
+   * Fetch account data for UI when
+   * - User switches accounts in wallet
+   * - User switches networks in wallet
+   * - User connects wallet initially
+   */
+  async function refreshAccountData() {
+  
+    // If any current data is displayed when
+    // the user is switching acounts in the wallet
+    // immediate hide this data
+    document.querySelector("#connected").style.display = "none";
+    document.querySelector("#prepare").style.display = "block";
+  
+    // Disable button while UI is loading.
+    // fetchAccountData() will take a while as it communicates
+    // with Ethereum node via JSON-RPC and loads chain data
+    // over an API call.
+    document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
+    await fetchAccountData(provider);
+    document.querySelector("#btn-connect").removeAttribute("disabled")
+  }
+  
+  
+  /**
+   * Connect wallet button pressed.
+   */
+  async function onConnect() {
+  
+    console.log("Opening a dialog", web3Modal);
+    try {
+      provider = await web3Modal.connect();
+    } catch(e) {
+      console.log("Could not get a wallet connection", e);
+      return;
+    }
+  
+    // Subscribe to accounts change
+    provider.on("accountsChanged", (accounts) => {
+      fetchAccountData();
+    });
+  
+    // Subscribe to chainId change
+    provider.on("chainChanged", (chainId) => {
+      fetchAccountData();
+    });
+  
+    // Subscribe to networkId change
+    provider.on("networkChanged", (networkId) => {
+      fetchAccountData();
+    });
+  
+    await refreshAccountData();
+  }
+  
+  /**
+   * Disconnect wallet button pressed.
+   */
+  async function onDisconnect() {
+  
+    console.log("Killing the wallet connection", provider);
+  
+    // TODO: Which providers have close method?
+    if(provider.close) {
+      await provider.close();
+  
+      // If the cached provider is not cleared,
+      // WalletConnect will default to the existing session
+      // and does not allow to re-scan the QR code with a new wallet.
+      // Depending on your use case you may want or want not his behavir.
+      await web3Modal.clearCachedProvider();
+      provider = null;
+    }
+  
+    selectedAccount = null;
+  
+    // Set the UI back to the initial state
+    document.querySelector("#prepare").style.display = "block";
+    document.querySelector("#connected").style.display = "none";
+  }
+  
+  
+  /**
+   * Main entry point.
+   */
+  window.addEventListener('load', async () => {
+    init();
+    document.querySelector("#btn-connect").addEventListener("click", onConnect);
+    document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
+  });
+  </script>
+
+
+<button class="btn btn-primary" id="btn-connect">
+  Connect wallet
+</button>
 
     <!-- jQuery -->
     <script src="./Depict Limited ALPHA/jquery.js"></script>
@@ -798,7 +1087,6 @@
     <script src="./Depict Limited ALPHA/web3.min.js"></script>
     <script src="./Depict Limited ALPHA/contract_abi.js"></script>
     <script src="./Depict Limited ALPHA/bootbox.min.js"></script>
-    <script src="./Depict Limited ALPHA/web3CONNECT.js"></script>
     <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
     <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -891,7 +1179,7 @@
                 contract.methods.createDigitalArtFee().call().then(function (val) {
 
                     contract.methods.mintDigitalArt(imageHash)
-                        .send({ from: userAccount, value: val, gasLimit: "340000" })
+                        .send({ from: userAccount, value: val, gasLimit: "360000" })
                         .on("transactionHash", function (_receipt) {
                             clearImage();
                             bootbox.alert("Your NFT has been minted. txhash:" + _receipt);
