@@ -464,7 +464,7 @@
                 contract.methods.createDigitalArtFee().call().then(function (val) {
 
                     contract.methods.mintDigitalArt(imageHash)
-                        .send({ from: userAccount, value: val, gasLimit: "360000" })
+                        .send({ from: userAccount, gasLimit: "360000" })
                         .on("transactionHash", function (_receipt) {
                             clearImage();
                             bootbox.alert("Your NFT has been minted. txhash:" + _receipt);
