@@ -504,10 +504,12 @@
    key:'value'
 }
     
+    var buf2 = buffer.Buffer(obj5)
+    
     
     
 
-ipfs2.files.add(Buffer.from(JSON.stringify(obj5)))
+ipfs2.files.add(Buffer.from(JSON.stringify(buf2)))
   .then(res => {
     const hash = res[0].hash
     console.log('added data hash:', hash)
