@@ -496,7 +496,7 @@
 
 <script>
     
-    const obj5 = {
+    var obj5 = {
    key:'value',
    key:'value',
    key:'value',
@@ -504,12 +504,10 @@
    key:'value'
 }
     
-
-    
     
     
 
-ipfs2.files.add(Buffer.from(JSON.stringify(buf2)))
+ipfs2.files.add(Buffer.from(JSON.stringify(obj5)))
   .then(res => {
     const hash = res[0].hash
     console.log('added data hash:', hash)
