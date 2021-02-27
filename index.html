@@ -516,7 +516,7 @@
   }
 ]
 
-ipfs.files.add(Buffer.from(JSON.stringify(input)))
+ipfs2.files.add(Buffer.from(JSON.stringify(input)))
   .then(res => {
     const hash = res[0].hash
     console.log('added data hash:', hash)
