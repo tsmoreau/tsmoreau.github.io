@@ -495,7 +495,7 @@
     </script>
 
 <script>
-    const input = [
+    const input44 = [
   {
     'id': '0x10',
     'date': '14.07.2018'
@@ -510,7 +510,7 @@
   }
 ]
 
-ipfs2.files.add(Buffer.from(JSON.stringify(input)))
+ipfs2.files.add(Buffer.from(JSON.stringify(input44)))
   .then(res => {
     const hash = res[0].hash
     console.log('added data hash:', hash)
