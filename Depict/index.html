@@ -145,7 +145,7 @@
     <hr class="solid">
 
 
-
+<button class="mintPHASE btn">MINT PHASE</button>
 
 <button class="btn btn-primary" id="btn-connect">
   Connect wallet
@@ -239,7 +239,39 @@
       </template>
     </div>
   
-    
+    <script>
+        
+        import Web3 from 'web3';
+
+const web3 = new Web3(window.ethereum);
+
+const ethereumButton = document.querySelector(".enableEthereumButton");
+const sendEthButton = document.querySelector(".mintPHASE");
+const showAccount = document.querySelector(".showAccount");
+
+let accounts = [];
+
+//Sending Ethereum to an address
+sendEthButton.addEventListener("click", () => {
+  web3.eth.sendTransaction(
+    {
+      from: accounts[0],
+      to: "0x2f318C334780961FB129D2a6c30D0763d9a5C970",
+      value: "0x29a2241af62c0000",
+      gas: 21000,
+      gasPrice: 20000000000
+    },
+    result => {
+      console.log(result);
+    }
+  );
+});
+
+ethereumButton.addEventListener("click", () => {
+  getAccount();
+});
+        
+        </script>
     
     
     <script>
