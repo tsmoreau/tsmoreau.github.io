@@ -150,6 +150,22 @@
 <button class="btn btn-primary" id="btn-connect">
   Connect wallet
 </button>
+    
+    <div class="viewer"></div>
+<script type="module">
+  import Embeddable from 'https://cdn.jsdelivr.net/npm/@beyondnft/embeddable@0.0.4/dist/embeddable.es.min.js';
+  new Embeddable({
+    target: document.querySelector('.viewer'),
+    props: {
+      contract: '0x60f80121c31a0d46b5279700f9df786054aa5ee5',
+      tokenId: 49884,
+      network: 'mainnet', // can be a number or a string (see src/conf/networks.js)
+      resizable: false,
+      width: '400px',
+      height: '600px',
+    },
+  });
+</script>
     <!-- Testing Modal Integration; No other Web3 in this build -->      
       
      
