@@ -3,8 +3,11 @@ Moralis.serverURL = 'https://i4l7lvdxq9sd.moralis.io:2053/server'
 const TOKEN_CONTRACT_ADDRESS = "0x110eE108f45330E3Ae7e538614AA4eBD525E6A9D";
 const MARKETPLACE_CONTRACT_ADDRESS = "0xb6c8ADdd74836c8c537D3E89FCC79a4fF19A77F5";
 
+
 init = async () => {
     hideElement(userItemsSection);
+    hideElement(userInfo);
+    hideElement(createItemForm);
     window.web3 = await Moralis.Web3.enable();
     window.tokenContract = new web3.eth.Contract(tokenContractAbi, TOKEN_CONTRACT_ADDRESS);
     window.marketplaceContract = new web3.eth.Contract(marketplaceContractAbi, MARKETPLACE_CONTRACT_ADDRESS);
@@ -112,7 +115,7 @@ openUserInfo = async () => {
             hideElement(userAvatarImg);
         }
 
-        $('#userInfo').modal('show');
+        showElement(userInfo);
     }else{
         login();
     }
@@ -185,7 +188,7 @@ mintNft = async (metadataUrl) => {
 openUserItems = async () => {
     user = await Moralis.User.current();
     if (user){    
-        $('#userItems').modal('show');
+        showElement(userItemsSection);
     }else{
         login();
     }
@@ -256,7 +259,6 @@ renderItem = (item) => {
     if (item.sellerAvatar){
         itemForSale.getElementsByTagName("img")[0].src = item.sellerAvatar.url();
         itemForSale.getElementsByTagName("img")[0].alt = item.sellerUsername;
-     
     }
 
     itemForSale.getElementsByTagName("img")[1].src = item.image;
@@ -313,7 +315,7 @@ const userProfileButton = document.getElementById("btnUserInfo");
 userProfileButton.onclick = openUserInfo;
 
 const openCreateItemButton = document.getElementById("btnOpenCreateItem");
-openCreateItemButton.onclick = () => $('#createItem').modal('show');
+openCreateItemButton.onclick = () => showElement(createItemForm);
 
 //  User profile
 const userInfo = document.getElementById("userInfo");
