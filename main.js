@@ -1,5 +1,5 @@
-Moralis.initialize("scTtiXXPZvvBFkMjpzH4G2o2FgF9TAh2t5v6Puav");
-Moralis.serverURL = 'https://cwpoaa9isobw.moralis.io:2053/server';
+Moralis.initialize("gsCqFN445hU8M00I4mFjbiVRbWS0he6japuxpeV7");
+Moralis.serverURL = 'https://fkubj4p5l6jd.moralis.io:2053/server';
 const TOKEN_CONTRACT_ADDRESS = "0x110eE108f45330E3Ae7e538614AA4eBD525E6A9D";
 const MARKETPLACE_CONTRACT_ADDRESS = "0xC410AcefF25B05DEA7aDB65c7B92Bc272D9b87F3";
 
