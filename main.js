@@ -1,13 +1,10 @@
-Moralis.initialize("njzKCZK2k5pOg36fxFMaGfyCpCyJ6paWTAiJkNqt");
-Moralis.serverURL = 'https://zy7ycvilboxy.moralis.io:2053/server';
+Moralis.initialize("scTtiXXPZvvBFkMjpzH4G2o2FgF9TAh2t5v6Puav");
+Moralis.serverURL = 'https://cwpoaa9isobw.moralis.io:2053/server';
 const TOKEN_CONTRACT_ADDRESS = "0x110eE108f45330E3Ae7e538614AA4eBD525E6A9D";
 const MARKETPLACE_CONTRACT_ADDRESS = "0xC410AcefF25B05DEA7aDB65c7B92Bc272D9b87F3";
 
-
 init = async () => {
     hideElement(userItemsSection);
-    hideElement(userInfo);
-    hideElement(createItemForm);
     window.web3 = await Moralis.Web3.enable();
     window.tokenContract = new web3.eth.Contract(tokenContractAbi, TOKEN_CONTRACT_ADDRESS);
     window.marketplaceContract = new web3.eth.Contract(marketplaceContractAbi, MARKETPLACE_CONTRACT_ADDRESS);
@@ -115,7 +112,7 @@ openUserInfo = async () => {
             hideElement(userAvatarImg);
         }
 
-        showElement(userInfo);
+        $('#userInfo').modal('show');
     }else{
         login();
     }
@@ -188,7 +185,7 @@ mintNft = async (metadataUrl) => {
 openUserItems = async () => {
     user = await Moralis.User.current();
     if (user){    
-        showElement(userItemsSection);
+        $('#userItems').modal('show');
     }else{
         login();
     }
@@ -259,6 +256,7 @@ renderItem = (item) => {
     if (item.sellerAvatar){
         itemForSale.getElementsByTagName("img")[0].src = item.sellerAvatar.url();
         itemForSale.getElementsByTagName("img")[0].alt = item.sellerUsername;
+     
     }
 
     itemForSale.getElementsByTagName("img")[1].src = item.image;
@@ -315,7 +313,7 @@ const userProfileButton = document.getElementById("btnUserInfo");
 userProfileButton.onclick = openUserInfo;
 
 const openCreateItemButton = document.getElementById("btnOpenCreateItem");
-openCreateItemButton.onclick = () => showElement(createItemForm);
+openCreateItemButton.onclick = () => $('#createItem').modal('show');
 
 //  User profile
 const userInfo = document.getElementById("userInfo");
